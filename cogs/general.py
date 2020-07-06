@@ -2,6 +2,7 @@ import discord
 import asyncio
 import random
 import json
+import requests
 from discord.ext import commands
 
 class General(commands.Cog):
@@ -12,11 +13,13 @@ class General(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Bot Running")
+        print("Running")
 
     # Comands
     @commands.command()
     async def sayd(self, ctx,*, arg):
+        def is_author(ctx):
+            return ctx.author
         await ctx.channel.purge(limit=1)
         await ctx.send(arg)
 
@@ -28,9 +31,9 @@ class General(commands.Cog):
     async def hello(self, ctx):
             
         hello_array = [
-            "Hello",
-            "Hi",
-            "Hey!",
+            "Hello,",
+            "Hi,",
+            "Hey,",
             "Hi there!",
             "Hey there!",
             "Hey man!",
@@ -92,6 +95,13 @@ class General(commands.Cog):
         embed.add_field(name="Experience", value="0")
 
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def bitcoin(self, ctx):
+        url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
+        price = requests.get(url)
+        value = price.json()['bpi']['USD']['rate']
+        await ctx.send(f"Bitcoin current price is: ${value}")
 
 def setup(bot):
     bot.add_cog(General(bot))
