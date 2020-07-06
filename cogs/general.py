@@ -10,10 +10,7 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Events
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print("Running")
+    # Event
 
     # Comands
     @commands.command()
@@ -85,7 +82,6 @@ class General(commands.Cog):
         embed.set_thumbnail(url=member.avatar_url)
         await ctx.send(embed=embed)
 
-
     @commands.command()
     async def level(self, ctx, member: discord.Member = None):
         member = ctx.author if not member else member
@@ -102,6 +98,7 @@ class General(commands.Cog):
         price = requests.get(url)
         value = price.json()['bpi']['USD']['rate']
         await ctx.send(f"Bitcoin current price is: ${value}")
+
 
 def setup(bot):
     bot.add_cog(General(bot))
