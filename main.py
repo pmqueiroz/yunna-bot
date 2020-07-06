@@ -3,12 +3,12 @@ import os
 from discord.ext import commands
 
 token = os.environ['DISCORD_TOKEN']
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='$')
 bot.remove_command("help")
         
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(name="!help", type=2))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(name="$help", type=2))
 
 @bot.command()
 async def load(ctx, extension):

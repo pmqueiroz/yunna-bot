@@ -22,7 +22,6 @@ class General(commands.Cog):
 
     @commands.command()
     async def say(self, ctx,*, arg):
-        await ctx.channel.purge(limit=1)
         await ctx.send(arg)
 
     @commands.command()
