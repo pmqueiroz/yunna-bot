@@ -16,7 +16,7 @@ class Help(commands.Cog):
         embed.set_thumbnail(url="https://user-images.githubusercontent.com/54639269/71168042-aa5bad00-2234-11ea-875f-5745cba18f6a.png")
         embed.add_field(name="General", value="`say`, `info`, `help`, `avatar`, `creator`, `author`, `commands`", inline=False)
         embed.add_field(name="Moderator", value="`prune`, `clear`, `purge`, `kick`, `ban`, `unban`", inline=False)
-        embed.set_footer(text="use prefix '!' to this commands")
+        embed.set_footer(text="use prefix '$' to this commands")
         await ctx.channel.send(content=None, embed=embed)
 
 def setup(bot):
