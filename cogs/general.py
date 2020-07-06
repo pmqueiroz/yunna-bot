@@ -12,7 +12,7 @@ class General(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Running")
+        print("Bot Running")
 
     # Comands
     @commands.command()
@@ -27,16 +27,38 @@ class General(commands.Cog):
 
     @commands.command()
     async def hello(self, ctx):
-        def openJson():
-            with open("hello.json", "r") as f:
-                lines = f.read()
-                return lines
+            
+        hello_array = [
+            "Hello",
+            "Hi",
+            "Hey!",
+            "Hi there!",
+            "Hey there!",
+            "Hey man!",
+            "Hey bro",
+            "Hey dude!",
+            "Hey buddy!",
+            "Yo!",
+            "Howdy!"
+        ]
 
-        hello_answers = openJson()
-        answers = json.loads(hello_answers)
-        answers
-        hello = random.choice(answers['Hello'])
-        hay = random.choice(answers['Hay'])
+        hay_array = [
+            "how are you?",
+            "how are ya?",
+            "how are things?",
+            "how are things going?",
+            "how's it going?",
+            "what's going on?",
+            "how have you been?",
+            "what's up?",
+            "sup?",
+            "whazzup?",
+            "what's happening?",
+            "doing ok?"
+        ]
+
+        hello = random.choice(hello_array)
+        hay = random.choice(hay_array)
         await ctx.send(f"{hello} {ctx.author.mention} {hay}")
 
     @commands.command()
