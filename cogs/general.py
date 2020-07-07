@@ -23,6 +23,18 @@ class General(commands.Cog):
         await ctx.send(arg)
 
     @commands.command()
+    async def pin(self, ctx,*, arg):
+        await ctx.message.add_reaction('\U0001F4CC')
+        author = str(ctx.author)
+        profile_url = ctx.author.avatar_url
+        embed = discord.Embed(title=f"{ctx.message.content.replace('!pin', '')}",description=f"Message id: {ctx.message.id}", color=0xff4c5c)
+        embed.set_author(name=f"{author[:-5]} just pinned a message:", icon_url=profile_url)
+        embed.set_footer(text=f"Use $unpin {ctx.message.id} for unpin the message)")
+
+        pin_message = await ctx.channel.send(embed=embed)
+        await pin_message.pin()
+
+    @commands.command()
     async def hello(self, ctx):
             
         hello_array = [
@@ -60,7 +72,6 @@ class General(commands.Cog):
 
     @commands.command(pass_context=True, aliases=('author', 'developer'))
     async def creator(self, ctx):
-        author = ctx.message.author
         embed = discord.Embed(color=0x00ffff)
         embed.set_author(name="i just dont have what to do")
         embed.set_thumbnail(url='https://avatars0.githubusercontent.com/u/54639269?s=460&v=4')
@@ -92,7 +103,9 @@ class General(commands.Cog):
         price = requests.get(url)
         value = price.json()['bpi']['USD']['rate']
         await ctx.send(f"Bitcoin current price is: ${value}")
-        await ctx.message.add_reaction('\U0001F911')
+        reactions = ['\U0001F4B0', '\U0001F4B8', '\U0001F911']
+
+        await ctx.message.add_reaction(random.choice(reactions))
 
     @commands.command() 
     async def info(self, ctx, *, member: discord.Member = None):
