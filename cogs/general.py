@@ -60,10 +60,6 @@ class General(commands.Cog):
         hay = random.choice(hay_array)
         await ctx.send(f"{hello} {ctx.author.mention} {hay}")
 
-    @commands.command()
-    async def info(self, ctx):
-        await ctx.send("Yunna is a multi-purpose bot made as a test from an amateur that ended up becoming what we hope that you think as a great bot that now lies in your discord server. Please enjoy, and report to us any mistakes that you may encounter.")
-
     @commands.command(pass_context=True, aliases=('author', 'developer'))
     async def creator(self, ctx):
         author = ctx.message.author
@@ -98,6 +94,17 @@ class General(commands.Cog):
         price = requests.get(url)
         value = price.json()['bpi']['USD']['rate']
         await ctx.send(f"Bitcoin current price is: ${value}")
+
+    @commands.command() 
+    async def info(self, ctx, *, member: discord.Member = None):
+        member = ctx.author if not member else member
+        date = member.joined_at.strftime("%A, %B %d %Y %H:%M")
+        await ctx.channel.send(f"{member.mention} joined on {date} and has {len(member.roles)} roles.")
+
+    @info.error
+    async def info_error(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.channel.send("I couldn't find that member")
 
 
 def setup(bot):

@@ -28,6 +28,11 @@ class Moderation(commands.Cog):
 
         await message.channel.purge(limit=3, check=is_bot)
 
+    @prune.error
+    async def about_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.channel.send("You don't have permissions to use that command")
+
     @commands.command()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member,*, reason=None):
