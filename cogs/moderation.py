@@ -20,13 +20,8 @@ class Moderation(commands.Cog):
         embed.add_field(name="Total messages deleted:", value=amount)
         embed.set_footer(text="This message will be deleted after 5 seconds.")
 
-        await message.channel.send(content=None, embed=embed)
-        await asyncio.sleep(5)
-
-        def is_bot(ctx):
-            return ctx.author.id == 635227108335157268
-
-        await message.channel.purge(limit=3, check=is_bot)
+        temp = await message.channel.send(content=None, embed=embed)
+        await temp.delete(delay = 5)
 
     @prune.error
     async def about_error(self, ctx, error):
