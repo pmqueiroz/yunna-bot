@@ -2,6 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands
 
+n1 = '\n'
 
 class Moderation(commands.Cog):
 
@@ -9,19 +10,34 @@ class Moderation(commands.Cog):
         self.bot = bot
 
     # Comands
-    @commands.command(pass_context=True, aliases=('purge', 'clear'))
+    @commands.command(pass_context=True, aliases=('purge', 'cls'))
     @commands.has_permissions(manage_messages=True)
-    async def prune(self, message, amount='1'):
+    async def prune(self, ctx, amount='1'):
         if amount == 'all':
             amount = '100'
-        print(f"prunning {amount} messages")
-        await message.channel.purge(limit=int(amount))
-        embed = discord.Embed(title="All done!", description="Your messages have been deleted")
-        embed.add_field(name="Total messages deleted:", value=amount)
-        embed.set_footer(text="This message will be deleted after 5 seconds.")
 
-        temp = await message.channel.send(content=None, embed=embed)
-        await temp.delete(delay = 5)
+        real_amount = int(amount)
+        print(real_amount)
+        if int(amount) < 100:
+            real_amount += 1
+        print(real_amount)
+            
+        print(f"prunning {amount} messages")
+        await ctx.channel.purge(limit=real_amount)
+        count = 5
+        embed = discord.Embed(title="All done!", description="Your messages have been deleted")
+        embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
+        embed.set_footer(text="This message will be deleted after 5 seconds.")
+        temp = await ctx.channel.send(content=None, embed=embed)
+
+        for x in range(4, -1 , -1):
+            await asyncio.sleep(1)
+            count = x
+            uptade_embed = discord.Embed(title="All done!", description="Your messages have been deleted")
+            uptade_embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
+            uptade_embed.set_footer(text=f"This message will be deleted in {count} seconds.")
+            await temp.edit(embed=uptade_embed)
+        await temp.delete()
 
     @prune.error
     async def about_error(self, ctx, error):
