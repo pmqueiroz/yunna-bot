@@ -10,8 +10,6 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Event
-
     # Comands
     @commands.command()
     async def sayd(self, ctx,*, arg):
@@ -94,6 +92,7 @@ class General(commands.Cog):
         price = requests.get(url)
         value = price.json()['bpi']['USD']['rate']
         await ctx.send(f"Bitcoin current price is: ${value}")
+        await ctx.message.add_reaction('\U0001F911')
 
     @commands.command() 
     async def info(self, ctx, *, member: discord.Member = None):
