@@ -1,6 +1,7 @@
 import asyncio
 import discord
 from discord.ext import commands
+from discord.utils import get
 
 n1 = '\n'
 
@@ -43,6 +44,7 @@ class Moderation(commands.Cog):
     async def about_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.channel.send("You don't have permissions to use that command")
+
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
