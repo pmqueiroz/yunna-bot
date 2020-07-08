@@ -5,6 +5,19 @@
 Just a simple discord bot made with python :) moderate your discord server and have some fun.
 
 ## Useful links
-Bot Invite: [click here](https://discordapp.com/oauth2/authorize?client_id=635227108335157268&scope=bot&permissions=8)<br>
+Bot Invite: https://pmqueiroz.github.io/yunna/?refer=invite<br>
 Documentation: https://github.com/pmqueiroz/yunna-bot/wiki<br>
 Suport Server: https://discord.gg/mUvxbPv
+
+## Contributing
+
+1. [Fork the repository](https://github.com/pmqueiroz/yunna-bot/fork)
+2. Clone your fork<br>
+`$ git clone https://github.com/your-username/yunna-bot.git`
+3. Create your feature branch<br>
+`$ git checkout -b my-new-feature`
+4. Commit your changes<br>
+`$ git commit -am 'Add some feature'`
+5. Push to the branch<br>
+`$ git push origin my-new-feature`
+6. Submit a pull request ^^

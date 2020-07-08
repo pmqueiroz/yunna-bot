@@ -12,18 +12,6 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Activity(name="$help", type=2))
     print("Bot running")
 
-@bot.event
-async def on_member_join(member):
-    print(f"{member} has joined in server")
-    channel = get(member.guild.channels, name="general")
-    await channel.send(f"{member.mention} has joined in server")
-
-@bot.event
-async def on_member_remove(member):
-    print(f"{member} has left the server")
-    channel = get(member.guild.channels, name="general")
-    await channel.send(f"{member.mention} has left the server")
-
 @bot.command()
 async def join(ctx):
     global voice
@@ -48,7 +36,6 @@ async def leave(ctx):
         await voice.disconnect()
     else:
         await ctx.send("Im not connected")
-
 
 @bot.command()
 async def load(ctx, extension):

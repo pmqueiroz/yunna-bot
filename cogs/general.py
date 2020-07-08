@@ -4,11 +4,24 @@ import random
 import json
 import requests
 from discord.ext import commands
+from discord.utils import get
 
 class General(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        print(f"{member} has joined in server")
+        channel = get(member.guild.channels, name="general")
+        await channel.send(f"{member.mention} has joined in server")
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        print(f"{member} has left the server")
+        channel = get(member.guild.channels, name="general")
+        await channel.send(f"{member.mention} has left the server")
 
     # Comands
     @commands.command()
