@@ -1,9 +1,12 @@
 import discord
 import asyncio
 import pymongo
+import os
 from pymongo import MongoClient
 from discord.ext import commands
 from discord.utils import get
+
+mongourl = os.environ['MONGO_URL']
 
 class Levelling(commands.Cog):
 
@@ -13,7 +16,7 @@ class Levelling(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, ctx):
         print("message was sent")
-        mongo_url = "mongodb://peam:3calangos@ds159772.mlab.com:59772/heroku_hxb4kvx2?retryWrites=false"
+        mongo_url = mongourl
         cluster = MongoClient(mongo_url)
         db = cluster["heroku_hxb4kvx2"]
         colletion = db["level"]
