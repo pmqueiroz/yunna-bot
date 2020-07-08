@@ -15,42 +15,47 @@ class Levelling(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
-        print("message was sent")
-        mongo_url = mongourl
-        cluster = MongoClient(mongo_url)
-        db = cluster["heroku_hxb4kvx2"]
-        colletion = db["level"]
-        author_id = ctx.author.id
-        guild_id = ctx.guild.id
-        user_id = {"_id": author_id}
+        #provisory
+        confere = 361319158241165324
+        if ctx.author.id == confere:
 
-        if ctx.author == self.bot.user:
-            return
-        
-        if ctx.author.bot:
-            return
+            print("message was sent")
+            mongo_url = mongourl
+            cluster = MongoClient(mongo_url)
+            db = cluster["heroku_hxb4kvx2"]
+            colletion = db["level"]
+            author_id = ctx.author.id
+            guild_id = ctx.guild.id
+            user_id = {"_id": author_id}
 
-        if(colletion.count_documents({}) == 0):
-            user_info = {"_id": author_id,"GuildID": guild_id, "Level": 1, "Xp": 0}
-            colletion.insert_one(user_info)
+            if ctx.author == self.bot.user:
+                return
+            
+            if ctx.author.bot:
+                return
 
-        exp = colletion.find(user_id)
-        for xp in exp:
-            cur_xp = xp["Xp"]
+            if(colletion.count_documents({}) == 0):
+                user_info = {"_id": author_id,"GuildID": guild_id, "Level": 0, "Xp": 0}
+                colletion.insert_one(user_info)
 
-            new_xp = cur_xp + 1
+            exp = colletion.find(user_id)
 
-        colletion.update_one({"_id": author_id}, {"$set":{"Xp": new_xp}}, upsert=True)   
+            for xp in exp:
+                cur_xp = xp["Xp"]
 
-        level = colletion.find(user_id)
-        for lvl in level:
-            level_start = lvl["Level"]
+                new_xp = cur_xp + 1
 
-            new_level = level_start + 1
-        
-        if cur_xp >= round(5 * (level_start ** 4 / 5)):
-            colletion.update_one({"_id": author_id}, {"$set":{"Level": new_level}}, upsert =True)
-            await ctx.channel.send(f"{ctx.author.mention} has leveled up to {new_level}")
+            colletion.update_one({"_id": author_id}, {"$set":{"Xp": new_xp}}, upsert=True)   
+
+            level = colletion.find(user_id)
+            for lvl in level:
+                level_start = lvl["Level"]
+
+                new_level = level_start + 1
+            
+            if cur_xp >= round(5 * (level_start ** 4 / 5)):
+                colletion.update_one({"_id": author_id}, {"$set":{"Level": new_level}}, upsert =True)
+                await ctx.channel.send(f"{ctx.author.mention} has leveled up to {new_level}")
 
 
 def setup(bot):
