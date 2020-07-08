@@ -1,9 +1,13 @@
 import discord
 import os
+import pymongo
+from pymongo import MongoClient
 from discord.ext import commands
 from discord.utils import get
 
 token = os.environ['DISCORD_TOKEN']
+mongourl = os.environ['MONGO_URL']
+
 bot = commands.Bot(command_prefix='$')
 bot.remove_command("help")
         
@@ -36,6 +40,17 @@ async def leave(ctx):
         await voice.disconnect()
     else:
         await ctx.send("Im not connected")
+
+@bot.command()
+async def secret(ctx):
+    mongo_url = f"{mongourl}?retryWrites=false"
+    cluster = MongoClient(mongo_url)
+    db = cluster["heroku_hxb4kvx2"]
+    colletion = db["new"]
+    ping_cm = {"command":1}
+    colletion.insert_one(ping_cm)
+
+    await ctx.channel.send("you find the secret command")
 
 @bot.command()
 async def load(ctx, extension):

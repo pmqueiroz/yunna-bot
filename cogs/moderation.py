@@ -18,10 +18,8 @@ class Moderation(commands.Cog):
             amount = '100'
 
         real_amount = int(amount)
-        print(real_amount)
         if int(amount) < 100:
             real_amount += 1
-        print(real_amount)
             
         print(f"prunning {amount} messages")
         await ctx.channel.purge(limit=real_amount)
