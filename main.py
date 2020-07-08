@@ -17,42 +17,6 @@ async def on_ready():
     print("Bot running")
 
 @bot.command()
-async def join(ctx):
-    global voice
-    channel = ctx.message.author.voice.channel
-    voice = get(bot.voice_clients, guild=ctx.guild)
-
-    if voice and voice.is_connected():
-        await voice.move_to(channel)
-    else:
-        voice = await channel.connect()
-        print(f"The bot has connected to {channel}\n")
-
-    await ctx.message.add_reaction('\U0001F44C')
-
-@bot.command()
-async def leave(ctx):
-    channel = ctx.message.author.voice.channel
-    voice = get(bot.voice_clients, guild=ctx.guild)
-
-    if voice and voice.is_connected():
-        await ctx.message.add_reaction('\U0001F44B')
-        await voice.disconnect()
-    else:
-        await ctx.send("Im not connected")
-
-@bot.command()
-async def secret(ctx):
-    mongo_url = f"{mongourl}?retryWrites=false"
-    cluster = MongoClient(mongo_url)
-    db = cluster["heroku_hxb4kvx2"]
-    colletion = db["new"]
-    ping_cm = {"command":1}
-    colletion.insert_one(ping_cm)
-
-    await ctx.channel.send("you find the secret command")
-
-@bot.command()
 async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
 
