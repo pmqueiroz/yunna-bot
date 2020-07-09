@@ -112,16 +112,6 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def level(self, ctx, member: discord.Member = None):
-        member = ctx.author if not member else member
-        embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
-        embed.set_author(name=f"Level - {member}", icon_url=member.avatar_url)
-        embed.add_field(name="Level", value="1")
-        embed.add_field(name="Experience", value="0")
-
-        await ctx.send(embed=embed)
-
-    @commands.command()
     async def bitcoin(self, ctx):
         url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
         price = requests.get(url)
