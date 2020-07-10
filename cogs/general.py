@@ -107,9 +107,9 @@ class General(commands.Cog):
     @commands.command(pass_context=True)
     async def avatar(self, ctx, member: discord.Member = None):
         member = ctx.author if not member else member
-        embed=discord.Embed(title="Click on the picture to reveal bigger size", color=0xff4c5c)
+        embed=discord.Embed(title=f"{member.name}#{member.discriminator}",color=0xff4c5c)
         embed.set_author(name="I got the picture for you")
-        embed.set_thumbnail(url=member.avatar_url)
+        embed.set_image(url=member.avatar_url)
         await ctx.send(embed=embed)
 
     @commands.command()

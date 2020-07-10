@@ -29,22 +29,27 @@ class Moderation(commands.Cog):
                 users_in_purge[user] = 1
             else:
                 users_in_purge[user] += 1
-            
-        print(f"prunning {amount} messages")
+
+        users_in_purge_str = ""
+
+        for itens in users_in_purge.keys():
+            values = users_in_purge.get(itens)
+            users_in_purge_str += f"{itens}: {values}{n1}"
+                        
         await ctx.channel.purge(limit=real_amount)
         count = 5
-        embed = discord.Embed(title="All done!", description="Your messages have been deleted")
-        embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
-        embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
-        embed.set_footer(text="This message will be deleted after 5 seconds.")
-        temp = await ctx.channel.send(content=None, embed=embed)
+        embed = discord.Embed(color=0x00ffff)
+        embed.add_field(name="Total messages deleted", value=f"```c{n1}{amount}```", inline=False)
+        embed.add_field(name="Deleted messages by user", value=f"```c{n1}{users_in_purge_str}```", inline=False)
+        embed.set_footer(text="This message will be deleted in 5 seconds.")
+        temp = await ctx.channel.send(content="All done! Your messages have been deleted", embed=embed)
 
         for x in range(4, -1 , -1):
             await asyncio.sleep(1)
             count = x
-            uptade_embed = discord.Embed(title="All done!", description="Your messages have been deleted")
-            uptade_embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
-            uptade_embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
+            uptade_embed = discord.Embed(color=0x00ffff)
+            uptade_embed.add_field(name="Total messages deleted", value=f"```c{n1}{amount}```", inline=False)
+            uptade_embed.add_field(name="Deleted messages by user", value=f"```c{n1}{users_in_purge_str}```", inline=False)
             uptade_embed.set_footer(text=f"This message will be deleted in {count} seconds.")
             await temp.edit(embed=uptade_embed)
         await temp.delete()
