@@ -23,7 +23,7 @@ class Moderation(commands.Cog):
 
         users_in_purge = {}
 
-        async for message in ctx.channel.history(limit = 100):
+        async for message in ctx.channel.history(limit = real_amount):
             user = f"{message.author.name}#{message.author.discriminator}"
             if not user in users_in_purge:
                 users_in_purge[user] = 1
