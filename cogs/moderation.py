@@ -20,11 +20,21 @@ class Moderation(commands.Cog):
         real_amount = int(amount)
         if int(amount) < 100:
             real_amount += 1
+
+        users_in_purge = {}
+
+        async for message in ctx.channel.history(limit = 100):
+            user = f"{message.author.name}#{message.author.discriminator}"
+            if not user in users_in_purge:
+                users_in_purge[user] = 1
+            else:
+                users_in_purge[user] += 1
             
         print(f"prunning {amount} messages")
         await ctx.channel.purge(limit=real_amount)
         count = 5
         embed = discord.Embed(title="All done!", description="Your messages have been deleted")
+        embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
         embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
         embed.set_footer(text="This message will be deleted after 5 seconds.")
         temp = await ctx.channel.send(content=None, embed=embed)
@@ -33,6 +43,7 @@ class Moderation(commands.Cog):
             await asyncio.sleep(1)
             count = x
             uptade_embed = discord.Embed(title="All done!", description="Your messages have been deleted")
+            uptade_embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
             uptade_embed.add_field(name="Total messages deleted:", value=f"```c{n1}{amount}{n1}```")
             uptade_embed.set_footer(text=f"This message will be deleted in {count} seconds.")
             await temp.edit(embed=uptade_embed)

@@ -29,6 +29,7 @@ class General(commands.Cog):
         def is_author(ctx):
             return ctx.author
         await ctx.channel.purge(limit=1)
+        await asyncio.sleep(5)
         await ctx.send(arg)
 
     @commands.command()

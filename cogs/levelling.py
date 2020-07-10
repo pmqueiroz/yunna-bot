@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from discord.ext import commands
 from discord.utils import get
 
-mongourl = os.environ['MONGO_URL']
+mongourl = f"{os.environ['MONGO_URL']}?retryWrites=false"
 mongo_url = mongourl
 cluster = MongoClient(mongo_url)
 db = cluster["heroku_hxb4kvx2"]
@@ -25,8 +25,15 @@ class Levelling(commands.Cog):
         level_id = f"{ctx.author.id}&{ctx.guild.id}"
         xp_gain = random.randint(15, 25)
         user_id = {"_id": level_id}
-        ok = False
-        is_command = ctx.content.startswith("!")
+        user_exist = False
+        is_command = ctx.content.startswith("$")
+
+        author = f"{ctx.author.name}#{ctx.author.discriminator}"
+        async for message in ctx.channel.history(limit = 2):
+            user = f"{message.author.name}#{message.author.discriminator}"
+
+        if author == user:
+            return
 
         if ctx.author == self.bot.user:
             return
@@ -39,9 +46,9 @@ class Levelling(commands.Cog):
 
         dups = colletion.find(user_id)
         for x in dups:
-            ok = True
+            user_exist = True
 
-        if (ok == False):
+        if not user_exist:
             user_info = {"_id": level_id,"Level": 0, "Xp": 0}
             colletion.insert_one(user_info)
 
@@ -89,3 +96,4 @@ class Levelling(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Levelling(bot))
+
