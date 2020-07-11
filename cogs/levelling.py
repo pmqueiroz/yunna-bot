@@ -10,6 +10,7 @@ from discord.utils import get
 MONGO_URL = f"{os.environ['MONGO_URL']}?retryWrites=false"
 CLUSTER = MongoClient(MONGO_URL)
 COLLECTIONS = CLUSTER.heroku_hxb4kvx2
+levelling_stats = {"_id": "server_preferences"}
 
 class Levelling(commands.Cog):
 
@@ -23,7 +24,6 @@ class Levelling(commands.Cog):
         level_id = f"{ctx.author.id}"
         xp_gain = random.randint(15, 25)
         user_id = {"_id": level_id}
-        levelling_stats = {"_id": "server_preferences"}
         user_exist = False
         is_command = ctx.content.startswith("$") #TODO: CHECK IN DATABASE
         author = f"{ctx.author.name}#{ctx.author.discriminator}"
@@ -40,8 +40,8 @@ class Levelling(commands.Cog):
         for stats in levelling_guild_stats:
             levelling_ctx = stats["levelling_enable"]
 
-        if not levelling_ctx:
-            return
+            if not levelling_ctx:
+                return
 
         #check if the message was sent by the bot
         if ctx.author == self.bot.user:
@@ -111,6 +111,30 @@ class Levelling(commands.Cog):
         embed.add_field(name="Experience", value=f"{xp_status}/{next_xp_level}")
 
         await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def enable_level(self, ctx):
+        guild_table = COLLECTIONS[f"{ctx.guild.id}"]
+        levelling_guild_stats = guild_table.find(levelling_stats)
+        if guild_table.count_documents(levelling_stats) == 0:
+            guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
+
+        for stats in levelling_guild_stats:
+            levelling_ctx = stats["levelling_enable"]
+
+        if ctx.author.id != ctx.guild.owner.id:
+            return
+
+        if levelling_ctx:
+            await ctx.send("Levelling system is already activated on your server")
+            return
+
+        guild_table.update_one({"_id": "server_preferences"}, {"$set":{"levelling_enable": True}}, upsert =True)
+        await ctx.send("Levelling system has been added to your server")
+
+            
+
 
 
 def setup(bot):
