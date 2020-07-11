@@ -79,8 +79,6 @@ class Levelling(commands.Cog):
             guild_table.update_one({"_id": level_id}, {"$inc":{"Level": 1}}, upsert =True)
             await ctx.channel.send(f"{ctx.author.mention} advanced to level  {new_level}")
 
-        print("vou contar")
-
     @commands.command()
     async def level(self, ctx, member: discord.Member = None):
         member = ctx.author if not member else member
