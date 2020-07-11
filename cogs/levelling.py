@@ -16,11 +16,6 @@ class Levelling(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_guild_join(self, guild):
-        guild_table_name = COLLECTIONS[f"{guild.id}"]
-        guild_table_name.insert_one({"_id": "server_prefix", "prefix": "$"})
-
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -28,15 +23,24 @@ class Levelling(commands.Cog):
         level_id = f"{ctx.author.id}"
         xp_gain = random.randint(15, 25)
         user_id = {"_id": level_id}
+        levelling_stats = {"_id": "server_preferences"}
         user_exist = False
         is_command = ctx.content.startswith("$") #TODO: CHECK IN DATABASE
         author = f"{ctx.author.name}#{ctx.author.discriminator}"
         
         #CHECKS INIT
-        #check if the last message was sent by the same person
+        # check if the last message was sent by the same person
         async for message in ctx.channel.history(limit = 2):
             user = f"{message.author.name}#{message.author.discriminator}"
         if author == user:
+            return
+
+        #check if the levelling system is activated in the guild
+        levelling_guild_stats = guild_table.find(levelling_stats)
+        for stats in levelling_guild_stats:
+            levelling_ctx = stats["levelling_enable"]
+
+        if not levelling_ctx:
             return
 
         #check if the message was sent by the bot
@@ -74,6 +78,8 @@ class Levelling(commands.Cog):
         if cur_xp >= round(5 / 6 * new_level * (2 * new_level * new_level + 27 * new_level + 91)):
             guild_table.update_one({"_id": level_id}, {"$inc":{"Level": 1}}, upsert =True)
             await ctx.channel.send(f"{ctx.author.mention} advanced to level  {new_level}")
+
+        print("vou contar")
 
     @commands.command()
     async def level(self, ctx, member: discord.Member = None):
