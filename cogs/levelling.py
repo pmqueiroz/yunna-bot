@@ -37,6 +37,9 @@ class Levelling(commands.Cog):
 
         #check if the levelling system is activated in the guild
         levelling_guild_stats = guild_table.find(levelling_stats)
+        if guild_table.count_documents(levelling_stats) == 0:
+            guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
+            
         for stats in levelling_guild_stats:
             levelling_ctx = stats["levelling_enable"]
 
