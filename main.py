@@ -5,8 +5,10 @@ from pymongo import MongoClient
 from discord.ext import commands
 from discord.utils import get
 
-token = os.environ['DISCORD_TOKEN']
-mongourl = f"{os.environ['MONGO_URL']}?retryWrites=false"
+TOKEN = os.environ['DISCORD_TOKEN']
+MONGO_URL = f"{os.environ['MONGO_URL']}?retryWrites=false"
+CLUSTER = MongoClient(MONGO_URL)
+COLLECTIONS = CLUSTER.heroku_hxb4kvx2
 
 bot = commands.Bot(command_prefix='$')
 bot.remove_command("help")
@@ -18,20 +20,10 @@ async def on_ready():
 
 @bot.command()
 async def log(ctx):
-    if not ctx.author.id == 361319158241165324:
-        return
-
-    users_in_purge = {}
-
-    async for message in ctx.channel.history(limit = 100):
-        user = f"{message.author.name}#{message.author.discriminator}"
-        if not user in users_in_purge:
-            users_in_purge[user] = 1
-        else:
-            users_in_purge[user] += 1
-
-    print(users_in_purge)
-
+        tab_id = ctx.guild.id
+        guild_table_name = COLLECTIONS[f"{tab_id}"]
+        guild_table_name.insert_one({"_id": ctx.author.id, "Level":0, "Xp": 0})
+        sla = 1
 
 
     # messages = await ctx.channel.history(limit=5)
@@ -50,4 +42,4 @@ for filename in os.listdir('./cogs'):
         bot.load_extension(f'cogs.{filename[:-3]}')
 
     
-bot.run(token)
+bot.run(TOKEN)

@@ -17,7 +17,6 @@ class music(commands.Cog):
             await voice.move_to(channel)
         else:
             voice = await channel.connect()
-            print(f"The bot has connected to {channel}\n")
 
         await ctx.message.add_reaction('\U0001F44C')
 

@@ -1,5 +1,10 @@
 {
     "recommendations": [
-        "ms-python.python",
+        "naumovs.color-highlight",
+        "dracula-theme.theme-dracula",
+        "pkief.material-icon-theme",
+        "editorconfig.editorconfig",
+        "ritwickdey.liveserver",
+        "icrawl.discord-vscode",
     ]
-  }
+}

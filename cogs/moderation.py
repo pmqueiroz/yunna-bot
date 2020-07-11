@@ -22,9 +22,11 @@ class Moderation(commands.Cog):
             real_amount += 1
 
         users_in_purge = {}
+        qtt_deleted = 0
 
         async for message in ctx.channel.history(limit = real_amount):
             user = f"{message.author.name}#{message.author.discriminator}"
+            qtt_deleted += 1
             if not user in users_in_purge:
                 users_in_purge[user] = 1
             else:
@@ -39,7 +41,7 @@ class Moderation(commands.Cog):
         await ctx.channel.purge(limit=real_amount)
         count = 5
         embed = discord.Embed(color=0x00ffff)
-        embed.add_field(name="Total messages deleted", value=f"```c{n1}{amount}```", inline=False)
+        embed.add_field(name="Total messages deleted", value=f"```c{n1}{qtt_deleted}```", inline=False)
         embed.add_field(name="Deleted messages by user", value=f"```c{n1}{users_in_purge_str}```", inline=False)
         embed.set_footer(text="This message will be deleted in 5 seconds.")
         temp = await ctx.channel.send(content="All done! Your messages have been deleted", embed=embed)
@@ -48,7 +50,7 @@ class Moderation(commands.Cog):
             await asyncio.sleep(1)
             count = x
             uptade_embed = discord.Embed(color=0x00ffff)
-            uptade_embed.add_field(name="Total messages deleted", value=f"```c{n1}{amount}```", inline=False)
+            uptade_embed.add_field(name="Total messages deleted", value=f"```c{n1}{qtt_deleted}```", inline=False)
             uptade_embed.add_field(name="Deleted messages by user", value=f"```c{n1}{users_in_purge_str}```", inline=False)
             uptade_embed.set_footer(text=f"This message will be deleted in {count} seconds.")
             await temp.edit(embed=uptade_embed)
