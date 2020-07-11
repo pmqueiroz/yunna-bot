@@ -15,11 +15,11 @@ Suport Server: https://discord.gg/mUvxbPv
 
 1. [Fork the repository](https://github.com/pmqueiroz/yunna-bot/fork)
 2. Clone your fork<br>
-`$ git clone https://github.com/your-username/yunna-bot.git`
+   `$ git clone https://github.com/your-username/yunna-bot.git`
 3. Create your feature branch<br>
-`$ git checkout -b my-new-feature`
+   `$ git checkout -b my-new-feature`
 4. Commit your changes<br>
-`$ git commit -am 'Add some feature'`
+   `$ git commit -am 'Add some feature'`
 5. Push to the branch<br>
-`$ git push origin my-new-feature`
+   `$ git push origin my-new-feature`
 6. Submit a pull request ^^
