@@ -21,11 +21,14 @@ class Levelling(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, ctx):
         guild_table = COLLECTIONS[f"{ctx.guild.id}"]
+        server_preferences_table = guild_table.find(server_preferences)
+        for pre in server_preferences_table:
+            prefix = pre["prefix"]
         level_id = f"{ctx.author.id}"
         xp_gain = random.randint(15, 25)
         user_id = {"_id": level_id}
         user_exist = False
-        is_command = ctx.content.startswith("$") #TODO: CHECK IN DATABASE
+        is_command = ctx.content.startswith(prefix)
         author = f"{ctx.author.name}#{ctx.author.discriminator}"
         
         #CHECKS INIT

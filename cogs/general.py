@@ -3,8 +3,16 @@ import asyncio
 import random
 import json
 import requests
+import os
+import pymongo
+from pymongo import MongoClient
 from discord.ext import commands
 from discord.utils import get
+
+MONGO_URL = f"{os.environ['MONGO_URL']}?retryWrites=false"
+CLUSTER = MongoClient(MONGO_URL)
+COLLECTIONS = CLUSTER.heroku_hxb4kvx2
+server_preferences = {"_id": "server_preferences"}
 
 class General(commands.Cog):
 
@@ -37,16 +45,21 @@ class General(commands.Cog):
 
     @commands.command()
     async def pin(self, ctx,*, arg):
+        guild_table = COLLECTIONS[f"{ctx.guild.id}"]
+        server_preferences_table = guild_table.find(server_preferences)
+        for pre in server_preferences_table:
+            prefix = pre["prefix"]
+
         await ctx.message.add_reaction('\U0001F4CC')
         profile_url = ctx.author.avatar_url
-        embed = discord.Embed(title=f"{ctx.message.content.replace('$pin', '')}", color=0xff4c5c)
+        embed = discord.Embed(title=f"{ctx.message.content.replace(f'{prefix}pin', '')}", color=0xff4c5c)
         embed.set_author(name=f"{ctx.author.name} just pinned a message:", icon_url=profile_url)
         pin_message = await ctx.channel.send(embed=embed)
         await pin_message.pin()
 
-        up_embed = discord.Embed(title=f"{ctx.message.content.replace('$pin', '')}", color=0xff4c5c)
+        up_embed = discord.Embed(title=f"{ctx.message.content.replace(f'{prefix}pin', '')}", color=0xff4c5c)
         up_embed.set_author(name=f"{ctx.author.name} just pinned a message:", icon_url=profile_url)
-        up_embed.set_footer(text=f"Use $unpin {pin_message.id} for unpin the message")
+        up_embed.set_footer(text=f"Use {prefix}unpin {pin_message.id} for unpin the message")
         await pin_message.edit(embed=up_embed)
 
     @commands.command()
