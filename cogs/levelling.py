@@ -10,7 +10,7 @@ from discord.utils import get
 MONGO_URL = f"{os.environ['MONGO_URL']}?retryWrites=false"
 CLUSTER = MongoClient(MONGO_URL)
 COLLECTIONS = CLUSTER.heroku_hxb4kvx2
-levelling_stats = {"_id": "server_preferences"}
+server_preferences = {"_id": "server_preferences"}
 
 class Levelling(commands.Cog):
 
@@ -36,8 +36,8 @@ class Levelling(commands.Cog):
             return
 
         #check if the levelling system is activated in the guild
-        levelling_guild_stats = guild_table.find(levelling_stats)
-        if guild_table.count_documents(levelling_stats) == 0:
+        levelling_guild_stats = guild_table.find(server_preferences)
+        if guild_table.count_documents(server_preferences) == 0:
             guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
             
         for stats in levelling_guild_stats:
@@ -116,18 +116,15 @@ class Levelling(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @commands.is_owner()
     async def enable_level(self, ctx):
         guild_table = COLLECTIONS[f"{ctx.guild.id}"]
-        levelling_guild_stats = guild_table.find(levelling_stats)
-        if guild_table.count_documents(levelling_stats) == 0:
+        levelling_guild_stats = guild_table.find(server_preferences)
+        if guild_table.count_documents(server_preferences) == 0:
             guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
 
         for stats in levelling_guild_stats:
             levelling_ctx = stats["levelling_enable"]
-
-        if ctx.author.id != ctx.guild.owner.id:
-            return
 
         if levelling_ctx:
             await ctx.send("Levelling system is already activated on your server")
