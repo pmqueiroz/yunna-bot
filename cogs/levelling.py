@@ -4,7 +4,7 @@ import pymongo
 import os
 import random
 from pymongo import MongoClient
-from discord.ext import commands
+from discord.ext import flags, commands
 from discord.utils import get
 
 MONGO_URL = f"{os.environ['MONGO_URL']}?retryWrites=false"
@@ -85,15 +85,47 @@ class Levelling(commands.Cog):
             guild_table.update_one({"_id": level_id}, {"$inc":{"Level": 1}}, upsert =True)
             await ctx.channel.send(f"{ctx.author.mention} advanced to level  {new_level}")
 
+    # @flags.add_flag("--set", default = '')
+    # @flags.command()
     @commands.command()
     async def level(self, ctx, member: discord.Member = None):
+
         member = ctx.author if not member else member
         guild_table = COLLECTIONS[f"{ctx.guild.id}"]
+        levelling_guild_stats = guild_table.find(server_preferences)
         author_id = ctx.author.id
         guild_id = ctx.guild.id
         level_id = f"{ctx.author.id}"
         user_id = {"_id": level_id}
         user_exist = False
+
+
+        # enable_flag = flags["set"]
+
+        # if enable_flag.lower() == 'enable':
+            
+        #     if guild_table.count_documents(server_preferences) == 0:
+        #         guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
+
+        #     for stats in levelling_guild_stats:
+        #         levelling_ctx = stats["levelling_enable"]
+
+        #     if levelling_ctx:
+        #         await ctx.send("Levelling system is already activated on your server")
+        #         return
+
+        #     guild_table.update_one({"_id": "server_preferences"}, {"$set":{"levelling_enable": True}}, upsert =True)
+        #     await ctx.send("Levelling system has been added to your server")
+        #     return
+        # elif enable_flag.lower() == 'disable':
+        #     print('disable')
+        #     return
+        # elif enable_flag.lower() == '':
+        #     pass
+        # else:
+        #     await ctx.channel.send("Invalid --set value, type 'enable' or 'disable for a valid action'")
+        #     return
+        
 
         dups = guild_table.find(user_id)
         for x in dups:
@@ -115,8 +147,8 @@ class Levelling(commands.Cog):
         embed.set_author(name=f"Level - {member}", icon_url=member.avatar_url)
         embed.add_field(name="Level", value=level_status)
         embed.add_field(name="Experience", value=f"{xp_status}/{next_xp_level}")
-
         await ctx.send(embed=embed)
+
 
     @commands.command()
     @commands.is_owner()
