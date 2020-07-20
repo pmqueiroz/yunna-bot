@@ -129,13 +129,14 @@ class Levelling(commands.Cog):
         
         enable_flag = flags["set"]
 
-        if enable_flag.lower() == 'enable':
-            
-            if guild_table.count_documents(server_preferences) == 0:
-                guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
+        if guild_table.count_documents(server_preferences) == 0:
+            guild_table.insert_one({"_id": "server_preferences", "prefix": "$", "levelling_enable": False})
 
-            for stats in levelling_guild_stats:
-                levelling_ctx = stats["levelling_enable"]
+        for stats in levelling_guild_stats:
+            levelling_ctx = stats["levelling_enable"]
+            sv_prefix = stats["prefix"]
+
+        if enable_flag.lower() == 'enable':
 
             if levelling_ctx:
                 await ctx.send("Levelling system is already activated on your server")
@@ -145,10 +146,16 @@ class Levelling(commands.Cog):
             await ctx.send("Levelling system has been added to your server")
             return
         elif enable_flag.lower() == 'disable':
-            print('disable')
+
+            if not levelling_ctx:
+                await ctx.send("Levelling system is already disabled on your server")
+                return
+
+            guild_table.update_one({"_id": "server_preferences"}, {"$set":{"levelling_enable": False}}, upsert =True)
+            await ctx.send("Levelling system has been disabled in that server")
             return
         else:
-            await ctx.channel.send("Invalid --set value, type 'enable' or 'disable' for a valid action")
+            await ctx.channel.send(f"Invalid --set value, type `{sv_prefix}level --set enable` or `{sv_prefix}level --set disable` for a valid action")
 
 
 def setup(bot):
