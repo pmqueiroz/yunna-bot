@@ -4,13 +4,13 @@
 <p align="center"><img src="https://api.codacy.com/project/badge/Grade/9ff6f887720b46309b9d28a50943597a" href="https://app.codacy.com/manual/pmqueiroz/yunna-bot?utm_source=github.com&utm_medium=referral&utm_content=pmqueiroz/yunna-bot&utm_campaign=Badge_Grade_Dashboard"/> <img src="https://img.shields.io/github/languages/top/pmqueiroz/yunna-bot?label=python%203&logo=python&logoColor=white"/> <img src="https://img.shields.io/github/license/pmqueiroz/yunna-bot"/> <img src="https://img.shields.io/badge/invite-yunna-7289da?logo=discord" href="https://discordapp.com/oauth2/authorize?client_id=635227108335157268&scope=bot&permissions=8"/></p>
 
 
-### Useful links
+### 😊 Useful links
 
 Bot Invite: https://pmqueiroz.github.io/yunna-bot/?refer=invite<br>
 Documentation: https://github.com/pmqueiroz/yunna-bot/wiki<br>
 Suport Server: https://discord.gg/mUvxbPv
 
-### Contributing
+### 🤝 Contributing
 
 1. [Fork the repository](https://github.com/pmqueiroz/yunna-bot/fork)
 2. Clone your fork<br>
@@ -23,6 +23,6 @@ Suport Server: https://discord.gg/mUvxbPv
    `$ git push origin my-new-feature`
 6. Submit a pull request ^^
 
-### License
+### 📝 License
 
 This project is under the MIT license. See the [LICENSE](https://github.com/pmqueiroz/yunna-bot/blob/master/LICENSE) for more information.
