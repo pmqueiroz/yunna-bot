@@ -39,7 +39,7 @@ async def prefix(ctx, *, prefix):
     guild_table = COLLECTIONS[f"{ctx.guild.id}"]
     server_preferences_table = guild_table.find(server_preferences)
     guild_table.update_one(server_preferences, {"$set":{"prefix": prefix}}, upsert =True)
-    await ctx.channel.send(f"The prefix has been changend for `{prefix}` type `{prefix}help` to see all commands")
+    await ctx.channel.send(f"The prefix has been changed for `{prefix}` type `{prefix}help` to see all commands")
 
 @bot.command()
 async def load(ctx, extension):
